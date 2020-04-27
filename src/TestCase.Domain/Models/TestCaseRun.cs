@@ -14,6 +14,8 @@ namespace TestCase.Domain.Models
             Status = status;
 
             StartDate = DateTime.UtcNow;
+
+            Validate();
         }
 
         public string Owner { get; private set; }
@@ -21,19 +23,33 @@ namespace TestCase.Domain.Models
         public DateTime EndDate { get; private set; }
         public ETestCaseStatus Status { get; private set; }
 
-        public void SetQueued()
+        public void Enqueue()
         {
             ChangeStatus(ETestCaseStatus.Queued);
         }
 
-        public void SetInProgress()
+        public void Start()
         {
             ChangeStatus(ETestCaseStatus.InProgress);
         }
 
-        public void SetFinished()
+        public void Stop()
         {
-            ChangeStatus(ETestCaseStatus.Finished);
+            if (Status == ETestCaseStatus.InProgress)
+            {
+                throw new DomainException($"The TestCase is not running.");
+            }
+        }
+
+        public void Fail()
+        {
+            ChangeStatus(ETestCaseStatus.Failed);
+            EndDate = DateTime.UtcNow;
+        }
+
+        public void Pass()
+        {
+            ChangeStatus(ETestCaseStatus.Passed);
             EndDate = DateTime.UtcNow;
         }
 

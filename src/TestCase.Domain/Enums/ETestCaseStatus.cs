@@ -9,6 +9,8 @@ namespace TestCase.Domain.Enums
         Active = 0,
         Queued = 1,
         InProgress = 2,
-        Finished = 3,
+        Stoped = 3,
+        Failed = 4,
+        Passed = 5
     }
 }
